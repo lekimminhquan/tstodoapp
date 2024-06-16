@@ -1,4 +1,4 @@
-import React, { useRef, useState,useEffect } from 'react';
+import React, { useRef, useState,useEffect, ChangeEvent } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import axios from 'axios-typescript';
@@ -11,6 +11,7 @@ function App () {
   const [task,setTask] = useState<tasks[]>([])
   const [roles, setRole] = useState(0);
   const prerole = useRef(0)
+  const [input,setInput] = useState("")
   
   const del = () => {
     task.map(async (e) => {
@@ -83,12 +84,12 @@ function App () {
         });
       });
   };
-  const postapi = async (e:React.ChangeEvent<HTMLInputElement>&React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 13) {
-      if (e.target.value != "") {
+  const postapi = async (e:React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault()
+     if (input != "") {
         await axios
           .post("https://6641d7633d66a67b34352311.mockapi.io/api/todolist/1", {
-            item: e.target.value,
+            item: input,
             status: "TO DO",
           })
           .catch((error) => {
@@ -96,16 +97,17 @@ function App () {
           });
 
         setTask([...task,{
-            item: e.target.value,
+            item: input,
             status: "TO DO",
             id: task.length != 0 ? task[task.length - 1].id + 1 : '1',
             check:false,
             key:false
           },]);
+          setInput('')
           e.target.value=""
 
       }
-    }
+    
   };
   const edit = (id:string) => {
     task.map((item) => {
@@ -212,14 +214,16 @@ function App () {
   return (
     <div className="form">
       <div className="bodys">
+      <form onSubmit={postapi}>
         <p>NEED TO DO</p>
         <input
           type="text"
           placeholder="Add a new task and press 'Enter'"
           id="add"
-          onKeyDown={postapi}
-          
+          onChange={(e:ChangeEvent<HTMLInputElement>)=>{setInput(e.target.value)}}
+          value={input}
         />
+      </form>
         <div className="status">
           <span id="ALL" className={roles==0?'role':'unrol'} onClick={() => setRole(0)}>
             ALL
