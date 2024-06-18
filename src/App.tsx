@@ -22,7 +22,7 @@ function App () {
             "https://6641d7633d66a67b34352311.mockapi.io/api/todolist/1/" + e.id
           )
           .then((res) => {
-            removeelement(e.id);
+            removeElement(e.id);
           })
           .catch((error) => {
             return 0;
@@ -31,7 +31,7 @@ function App () {
       return 0;
     });
   };
-  const removeelement = (id:string) => {
+  const removeElement = (id:string) => {
     for (let i = 0; i<task.length;i++) {
       if (task[i].id == id) { 
         task.splice(i, 1);
@@ -40,7 +40,7 @@ function App () {
       }
     }
   };
-  const getapitask = async () => {
+  const getApiTask = async () => {
     await axios
       .get("https://6641d7633d66a67b34352311.mockapi.io/api/todolist/1")
       .then((res) => {
@@ -50,7 +50,7 @@ function App () {
       });
     console.log(task)
   };
-  const getapitasktodo = async () => {
+  const getApiTaskTodo = async () => {
     await axios
       .get("https://6641d7633d66a67b34352311.mockapi.io/api/todolist/1")
       .then((res) => {
@@ -61,7 +61,7 @@ function App () {
         });
       });
   };
-  const getapitaskinprogress = async () => {
+  const getApiTaskInprogress = async () => {
     await axios
       .get("https://6641d7633d66a67b34352311.mockapi.io/api/todolist/1")
       .then((res) => {
@@ -73,7 +73,7 @@ function App () {
         });
       });
   };
-  const getapitaskdone = async () => {
+  const getApiTaskDone = async () => {
     await axios
       .get("https://6641d7633d66a67b34352311.mockapi.io/api/todolist/1")
       .then((res) => {
@@ -84,7 +84,7 @@ function App () {
         });
       });
   };
-  const postapi = async (e:React.ChangeEvent<HTMLFormElement>) => {
+  const postApi = async (e:React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
      if (input != "") {
         await axios
@@ -118,7 +118,7 @@ function App () {
     });
   };
 
-  const editlisten = async (e:React.ChangeEvent<HTMLInputElement>& React.KeyboardEvent<HTMLInputElement>) => {
+  const editListen = async (e:React.ChangeEvent<HTMLInputElement>& React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode == 13) {
       if (e.target.value != "") {
         axios.put(
@@ -148,14 +148,14 @@ function App () {
 
 
 
-  const showseleterole = (statusname:string, value:string) => {
+  const showSelectRole = (statusname:string, value:string) => {
     if (statusname == value) {
       return true;
     } else {
       return false;
     }
   };
-  const checkdel = (e:React.ChangeEvent<HTMLInputElement>) => {
+  const checkDel = (e:React.ChangeEvent<HTMLInputElement>) => {
     task.map((t) => {
       if (t.id == e.target.id) {
         if (t.check == false) {
@@ -168,7 +168,7 @@ function App () {
       }
     });
   };
-  const setrole = async (e:React.ChangeEvent<HTMLSelectElement>) => {
+  const setRoles = async (e:React.ChangeEvent<HTMLSelectElement>) => {
     await axios.put(
       "https://6641d7633d66a67b34352311.mockapi.io/api/todolist/1/" +
       e.target.id,
@@ -187,25 +187,26 @@ function App () {
     switch (roles) {
       case 0: {
         setTask([]);
-        getapitask();
+        getApiTask();
         prerole.current = roles;
         break;
       }
       case 1: {
         setTask([]);
-        getapitasktodo();
+        getApiTaskTodo
+    ();
         prerole.current = roles;
         break;
       }
       case 2: {
         setTask([]);
-        getapitaskinprogress();
+        getApiTaskInprogress();
         prerole.current = roles;
         break;
       }
       case 3: {
         setTask([]);
-        getapitaskdone();
+        getApiTaskDone();
         prerole.current = roles;
         break;
       }
@@ -214,7 +215,7 @@ function App () {
   return (
     <div className="form">
       <div className="bodys">
-      <form onSubmit={postapi}>
+      <form onSubmit={postApi}>
         <p>NEED TO DO</p>
         <input
           type="text"
@@ -251,13 +252,13 @@ function App () {
                       type="checkbox"
                       className="inputchecked"
                       id={item.id}
-                      onChange={checkdel}
+                      onChange={checkDel}
                       checked={item.check}
                     />
                     {item.key ? (
                       <input
                         className="add2"
-                        onKeyDown={editlisten}
+                        onKeyDown={editListen}
                         id={item.id}
                         defaultValue={item.item}
                       ></input>
@@ -276,13 +277,13 @@ function App () {
                       name="statustask"
                       className="roles"
                       id={item.id}
-                      onChange={setrole}
+                      onChange={setRoles}
                     >
                       <option
                         className="opt"
                         value="TO DO"
                         id={item.id}
-                        selected={showseleterole(item.status, "TO DO")}
+                        selected={showSelectRole(item.status, "TO DO")}
 
                       >
                         TO DO
@@ -291,7 +292,7 @@ function App () {
                         className="opt"
                         value="IN PROGRESS"
                         id={item.id}
-                        selected={showseleterole(item.status, "IN PROGRESS")}
+                        selected={showSelectRole(item.status, "IN PROGRESS")}
                       >
                         IN PROGRESS
                       </option>
@@ -299,7 +300,7 @@ function App () {
                         className="opt"
                         value="DONE"
                         id={item.id}
-                        selected={showseleterole(item.status, "DONE")}
+                        selected={showSelectRole(item.status, "DONE")}
                       >
                         DONE
                       </option>
