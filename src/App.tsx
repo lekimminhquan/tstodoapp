@@ -13,7 +13,7 @@ function App () {
   const prerole = useRef(0)
   const [input,setInput] = useState("")
   
-  const del = () => {
+  const deleteTask = () => {
     task.map(async (e) => {
       console.log(typeof e)
       if (e.check == true) {
@@ -36,7 +36,7 @@ function App () {
       if (task[i].id == id) { 
         task.splice(i, 1);
         setTask([...task]);
-        del();
+        deleteTask();
       }
     }
   };
@@ -109,7 +109,7 @@ function App () {
       }
     
   };
-  const edit = (id:string) => {
+  const editTask = (id:string) => {
     task.map((item) => {
       if (item.id == id) {
         item.key = true;
@@ -238,7 +238,7 @@ function App () {
           <span id="DONE" className={roles==3?"role":"unrol"} onClick={() => setRole(3)}>
             Done
           </span>
-          <button className="clearbutton" onClick={del}>
+          <button className="clearbutton" onClick={deleteTask}>
             Clear
           </button>
         </div>
@@ -269,9 +269,9 @@ function App () {
                     )}
                     <span
                       className="material-symbols-outlined"
-                      onClick={() => edit(item.id)}
+                      onClick={() => editTask(item.id)}
                     >
-                      edit
+                      editTask
                     </span>
                     <select
                       name="statustask"
